@@ -1,7 +1,8 @@
-Publish Feed
+Publish Feed - OTC
 ============
+A slight modification of the publishfeed repo here on github. This fork enables you to setup a OTC stock news Twitter bot like so:https://twitter.com/OTCNewsWatcher
 
-A publisher of articles from websites RSS feeds to Twitter.
+Publisher of articles from websites RSS feeds to Twitter.
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-generate-toc again -->
 **Table of Contents**
