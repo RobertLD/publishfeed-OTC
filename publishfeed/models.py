@@ -50,14 +50,16 @@ class RSSContent(Base):
     id = Column(Integer, primary_key=True)
     url = Column(String)
     title = Column(String)
+    symbol = Column(String)
     dateAdded = Column(DateTime, default=datetime.now())
     published = Column(Boolean, unique=False, default=False)
 
     def __repr__(self):
-       return "<RSSContent(dateAdded='{}', title='{}', url='{}', published='{}')>".format(self.dateAdded, self.title, self.url, self.published)
+       return "<RSSContent(dateAdded='{}', title='{}', url='{}', published='{}', symbol='{}')>".format(self.dateAdded, self.title, self.url, self.published, self.symbol)
 
-    def __init__(self, url, title, dateAdded=None, published=False):
+    def __init__(self, url, title, dateAdded=None, published=False, symbol = None):
         self.url = url
         self.title = title
         self.dateAdded = dateAdded
         self.published = published
+        self.symbol = symbol

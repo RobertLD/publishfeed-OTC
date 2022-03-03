@@ -2,7 +2,9 @@ from models import RSSContent, FeedSet
 from twitter import Twitter
 import yaml
 import config
+import re
 import feedparser
+from dateutil import parser
 from datetime import datetime
 
 class Helper:
@@ -19,7 +21,7 @@ class FeedSetHelper(Helper):
     def get_pages_from_feeds(self):
         feed = FeedSet(self.data)
         for url in feed.urls:
-            parsed_feed = feedparser.parse(url)
+            parsed_feed = feedparser.parse(url, agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0')
             for entry in parsed_feed.entries:
                 # if feed page not exist, add it as rsscontent
                 q = self.session.query(RSSContent).filter_by(url = entry.link)
@@ -28,8 +30,9 @@ class FeedSetHelper(Helper):
                     item_title = entry.title
                     item_url = entry.link #.encode('utf-8')
                     #RFC 2822  standard: Wed, 7 Jun 2017 16:25:41 +0000
-                    item_date = datetime.strptime(entry.published, "%a, %d %b %Y %H:%M:%S +0000")
-                    item = RSSContent(url=item_url, title=item_title, dateAdded = item_date)
+                    item_symbol = entry.pink_symbol
+                    item_date = parser.parse(entry.published)
+                    item = RSSContent(url=item_url, title=item_title, dateAdded = item_date, symbol=item_symbol)
                     self.session.add(item)
 
 class RSSContentHelper(Helper):
@@ -51,8 +54,8 @@ class RSSContentHelper(Helper):
         body_length = self._calculate_tweet_length()
         tweet_body = rsscontent.title[:body_length]
         tweet_url = rsscontent.url
-        tweet_hashtag = self.data['hashtags']
-        tweet_text = "{} {} {}".format(tweet_body, tweet_url, tweet_hashtag)
+        symbol = "$" + rsscontent.symbol
+        tweet_text = "{} {} {}".format(symbol, tweet_body, tweet_url)
         twitter.update_status(tweet_text)
         rsscontent.published=True
         self.session.flush()

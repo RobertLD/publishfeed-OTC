@@ -1,9 +1,10 @@
-simpleitrocks: #twitter handler
+TWITTERHANDLER: #twitter handler
   twitter:
     consumer_key: ''
     consumer_secret: ''
     access_key: ''
     access_secret: ''
+    bearer_token: ''
   urls:
-    - #https://simpleit.rocks/feed
+    - http://www.otcmarkets.com/syndicate/rss.xml
   hashtags: ''
